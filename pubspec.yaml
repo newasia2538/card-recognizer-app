@@ -1,0 +1,35 @@
+name: card_recognizer
+description: "AI-powered trading card recognizer with chat interface."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  google_generative_ai: ^0.4.6
+  image_picker: ^1.1.2
+  url_launcher: ^6.3.1
+  shared_preferences: ^2.3.4
+  equatable: ^2.0.7
+  path_provider: ^2.1.5
+  uuid: ^4.5.1
+  intl: ^0.19.0
+  pasteboard: ^0.5.0
+  permission_handler: ^12.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.13
+
+flutter:
+  uses-material-design: true
