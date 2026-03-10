@@ -1,4 +1,4 @@
-# card_recognizer
+# Card Recognizer
 
 A new Flutter project.
 

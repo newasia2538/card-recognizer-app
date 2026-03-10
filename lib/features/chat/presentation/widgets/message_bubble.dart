@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:card_recognizer/core/constants/app_constants.dart';
 import 'package:card_recognizer/features/chat/domain/entities/chat_message.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -133,7 +134,7 @@ class MessageBubble extends StatelessWidget {
                         width: double.infinity,
                         constraints: const BoxConstraints(maxHeight: 200),
                         child: Image.file(
-                          File(message.imagePath!),
+                          File(message.imagePath ?? ''),
                           fit: BoxFit.cover,
                           errorBuilder:
                               (_, __, ___) => Container(
@@ -180,9 +181,9 @@ class MessageBubble extends StatelessWidget {
                           children: [
                             if (message.showPriceButton)
                               _ActionButton(
-                                key: const Key('price_button'),
+                                key: const Key(AppConstants.priceButtonKey),
                                 icon: Icons.attach_money,
-                                label: 'Last Sold Price',
+                                label: AppConstants.lastSoldPrice,
                                 gradient: const [
                                   Color(0xFFFF9800),
                                   Color(0xFFF44336),
@@ -191,9 +192,9 @@ class MessageBubble extends StatelessWidget {
                               ),
                             if (message.showBuyButton)
                               _ActionButton(
-                                key: const Key('buy_button'),
+                                key: const Key(AppConstants.buyButtonKey),
                                 icon: Icons.shopping_cart,
-                                label: 'Buy Now',
+                                label: AppConstants.buyNow,
                                 gradient: const [
                                   Color(0xFF4CAF50),
                                   Color(0xFF2196F3),

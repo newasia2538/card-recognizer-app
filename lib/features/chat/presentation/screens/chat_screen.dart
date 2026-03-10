@@ -184,7 +184,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       },
                     ),
           ),
-
           // Input bar
           MessageInput(
             isLoading: chatState.isLoading,

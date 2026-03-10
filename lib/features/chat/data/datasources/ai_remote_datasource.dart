@@ -9,7 +9,7 @@ class AiRemoteDataSource {
 
   Future<String> identifyCard(Uint8List imageBytes) async {
     final prompt = TextPart(
-      'What is this card? Please identify the card name, set and year, '
+      'What is this card? Please identify the card name, set and year, in short '
       'including the card condition if visible.',
     );
 
