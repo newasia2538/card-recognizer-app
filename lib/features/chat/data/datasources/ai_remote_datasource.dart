@@ -29,8 +29,7 @@ class AiRemoteDataSource {
       '- Recent sold prices\n'
       '- Price ranges for different conditions (Near Mint, Lightly Played, etc.)\n'
       '- Reference sources such as Pricecharting.com, TCGPlayer.com, '
-      'eBay sold listings, or other reliable sources.\n'
-      'Please include URLs or references where available.',
+      'eBay sold listings, or other reliable sources.',
     );
 
     final response = await _model.generateContent([

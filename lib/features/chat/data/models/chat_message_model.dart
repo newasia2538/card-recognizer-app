@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:card_recognizer/features/card_recognition/domain/entities/chat_message.dart';
+import 'package:card_recognizer/features/chat/domain/entities/chat_message.dart';
 
 class ChatMessageModel {
   final String id;
