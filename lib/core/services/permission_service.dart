@@ -1,10 +1,9 @@
 import 'package:card_recognizer/core/constants/permission_constants.dart';
-import 'package:card_recognizer/presentation/widgets/request_permission_dialog.dart';
+import 'package:card_recognizer/features/chat/presentation/widgets/request_permission_dialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
 class PermissionService {
-  // Request Camera Permission
   static Future<bool> requestCamera(BuildContext context) async {
     final status = await Permission.camera.status;
 
@@ -28,7 +27,6 @@ class PermissionService {
     return false;
   }
 
-  // Request Gallery Permission
   static Future<bool> requestGallery(BuildContext context) async {
     final status = await Permission.photos.status;
 
@@ -52,7 +50,6 @@ class PermissionService {
     return false;
   }
 
-  // Settings Dialog for Permanently Denied
   static void _showSettingsDialog(
     BuildContext context, {
     required String title,

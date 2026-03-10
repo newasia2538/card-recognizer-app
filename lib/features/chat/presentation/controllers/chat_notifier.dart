@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:card_recognizer/core/constants/app_constants.dart';
 import 'package:card_recognizer/core/services/permission_service.dart';
-import 'package:card_recognizer/features/card_recognition/domain/entities/chat_message.dart';
+import 'package:card_recognizer/features/chat/domain/entities/chat_message.dart';
 import 'package:card_recognizer/features/chat/domain/repositories/ai_repository.dart';
 import 'package:card_recognizer/features/chat/domain/repositories/chat_repository.dart';
 import 'package:flutter/foundation.dart';
@@ -250,31 +250,42 @@ class ChatNotifier extends StateNotifier<ChatState> {
     String cardName = cardNameLines.split(':').last.trim();
     if (cardName.isEmpty) return AppConstants.unknowCard;
 
-    cardName = cardName.replaceAll(RegExp(r'[#*_,]'), '').trim();
-
-    String playerNameLines = lines.firstWhere(
-      (s) => s.contains("Player"),
-      orElse: () => '',
-    );
-    if (playerNameLines.isEmpty) return cardName;
-
-    String playerName = playerNameLines.split(':').last.trim();
-    if (playerName.isEmpty) {
-      return '$cardName - $playerName'.replaceAll(RegExp(r'[#*_,]'), '').trim();
-    }
-
     String setLines = lines.firstWhere(
       (s) => s.contains("Set"),
       orElse: () => '',
     );
     if (setLines.isEmpty) {
-      return '$cardName - $playerName'.replaceAll(RegExp(r'[#*_,]'), '').trim();
+      return cardName.replaceAll(RegExp(r'[#*_,]'), '').trim();
     }
 
     String setName = setLines.split(':').last.trim();
-    if (setName.isEmpty) return cardName;
+    if (setName.isNotEmpty) {
+      cardName = '$cardName - $setName';
+    }
 
-    return '$playerName - $setName'.replaceAll(RegExp(r'[#*_,]'), '').trim();
+    String playerNameLines = lines.firstWhere(
+      (s) => s.contains("Player:"),
+      orElse: () => '',
+    );
+    if (playerNameLines.isNotEmpty) {
+      String playerName = playerNameLines.split(':').last.trim();
+      if (playerName.isNotEmpty) {
+        cardName = '$playerName - $setName'.trim();
+      }
+    }
+
+    String parallelLine = lines.firstWhere(
+      (s) => s.contains("Parallel:"),
+      orElse: () => '',
+    );
+    if (parallelLine.isNotEmpty) {
+      String parallelNumber = parallelLine.split(':').last.trim();
+      if (parallelNumber.isNotEmpty) {
+        cardName = '$cardName $parallelNumber'.trim();
+      }
+    }
+
+    return cardName.replaceAll(RegExp(r'[#*_,]'), '').trim();
   }
 }
 

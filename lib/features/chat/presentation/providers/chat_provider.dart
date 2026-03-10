@@ -1,20 +1,22 @@
 import 'package:card_recognizer/core/providers/core_provider.dart';
-
-import 'package:card_recognizer/features/chat/data/repositories/chat_repository_imple.dart';
+import 'package:card_recognizer/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:card_recognizer/features/chat/data/datasources/ai_remote_datasource.dart';
 import 'package:card_recognizer/features/chat/data/datasources/chat_local_datasource.dart';
 import 'package:card_recognizer/features/chat/data/repositories/ai_repository_impl.dart';
 import 'package:card_recognizer/features/chat/presentation/controllers/chat_notifier.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-const String _geminiApiKey = String.fromEnvironment(
-  'GEMINI_API_KEY',
-  defaultValue: '',
-);
-
 final generativeModelProvider = Provider<GenerativeModel>((ref) {
-  return GenerativeModel(model: 'gemini-2.5-flash', apiKey: _geminiApiKey);
+  final apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
+  if (apiKey.isEmpty) {
+    throw StateError(
+      'GEMINI_API_KEY is not set. '
+      'Please create a .env file with GEMINI_API_KEY=your_key_here',
+    );
+  }
+  return GenerativeModel(model: 'gemini-2.5-flash', apiKey: apiKey);
 });
 
 final chatLocalDataSourceProvider = Provider<ChatLocalDataSource>((ref) {
