@@ -255,7 +255,10 @@ class ChatNotifier extends StateNotifier<ChatState> {
       orElse: () => '',
     );
     if (setLines.isEmpty) {
-      return cardName.replaceAll(RegExp(r'[#*_,]'), '').trim();
+      return cardName
+          .replaceAll(RegExp(r'[^a-zA-Z0-9\- ]+'), '')
+          .replaceAll(RegExp(r'\s+'), ' ')
+          .trim();
     }
 
     String setName = setLines.split(':').last.trim();
@@ -285,7 +288,10 @@ class ChatNotifier extends StateNotifier<ChatState> {
       }
     }
 
-    return cardName.replaceAll(RegExp(r'[#*_,]'), '').trim();
+    return cardName
+        .replaceAll(RegExp(r'[^a-zA-Z0-9\- ]+'), '')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
   }
 }
 

@@ -12,6 +12,11 @@ class AppConstants {
   static const String camera = 'Camera';
   static const String gallery = 'Gallery';
   static const String paste = 'Paste';
+  static const String lastSoldPrice = 'Last Sold Price';
+  static const String buyNow = 'Buy Now';
+  static const String takePhoto = 'Take Photo';
+
+  // key constants for testing
   static const String cameraButtonKey = 'camera_button';
   static const String galleryButtonKey = 'gallery_button';
   static const String pasteButtonKey = 'paste_button';
@@ -20,5 +25,6 @@ class AppConstants {
   static const String chatListKey = 'chat_list';
   static const String menuButtonKey = 'menu_button';
   static const String confirmClearButtonKey = 'confirm_clear_button';
-  static const String takePhoto = 'Take Photo';
+  static const String priceButtonKey = 'price_button';
+  static const String buyButtonKey = 'buy_button';
 }

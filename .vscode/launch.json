@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "card_recognizer",
+            "name": "Card Recognizer",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "card_recognizer (profile mode)",
+            "name": "Card Recognizer (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "card_recognizer (release mode)",
+            "name": "Card Recognizer (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
