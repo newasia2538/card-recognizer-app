@@ -1,4 +1,4 @@
-import '../repositories/ai_repository.dart';
+import 'package:card_recognizer/features/chat/domain/repositories/ai_repository.dart';
 
 class GetLastSoldPriceUseCase {
   final AiRepository _aiRepository;

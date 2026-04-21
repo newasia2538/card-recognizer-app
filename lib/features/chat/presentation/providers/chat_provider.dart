@@ -8,6 +8,22 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
+final schema = Schema.object(
+  properties: {
+    'card': Schema.object(
+      properties: {
+        'name': Schema(SchemaType.string),
+        'set': Schema(SchemaType.string),
+        'year': Schema(SchemaType.string),
+        'rarity' : Schema(SchemaType.string),
+        'condition': Schema(SchemaType.string),
+        'lastSoldPrice' : Schema(SchemaType.string),
+      },
+      requiredProperties: ['name', 'set', 'year', 'rarity'],
+    ),
+  },
+);
+
 final generativeModelProvider = Provider<GenerativeModel>((ref) {
   final apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
   if (apiKey.isEmpty) {
@@ -16,7 +32,14 @@ final generativeModelProvider = Provider<GenerativeModel>((ref) {
       'Please create a .env file with GEMINI_API_KEY=your_key_here',
     );
   }
-  return GenerativeModel(model: 'gemini-2.5-flash', apiKey: apiKey);
+  return GenerativeModel(
+    model: 'gemini-2.5-flash',
+    generationConfig: GenerationConfig(
+      responseMimeType: 'application/json',
+      responseSchema: schema,
+    ),
+    apiKey: apiKey,
+  );
 });
 
 final chatLocalDataSourceProvider = Provider<ChatLocalDataSource>((ref) {
