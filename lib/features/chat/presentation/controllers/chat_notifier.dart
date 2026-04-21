@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:card_recognizer/core/constants/app_constants.dart';
 import 'package:card_recognizer/core/services/permission_service.dart';
+import 'package:card_recognizer/features/chat/data/models/card_detail_model.dart';
 import 'package:card_recognizer/features/chat/domain/entities/chat_message.dart';
 import 'package:card_recognizer/features/chat/domain/repositories/ai_repository.dart';
 import 'package:card_recognizer/features/chat/domain/repositories/chat_repository.dart';
@@ -72,11 +73,14 @@ class ChatNotifier extends StateNotifier<ChatState> {
       final response = await _aiRepository.identifyCard(imageBytes);
 
       // Try to extract card name from response (first line usually)
-      final cardName = _extractCardName(response);
+      Map<String, dynamic> cardJsonObject = jsonDecode(response);
+      final cardDetail = (cardJsonObject['card'] != null) ? CardDetailModel.fromJson(cardJsonObject['card']) : null;
+      final cardName = (cardDetail != null) ? '${cardDetail.name} ${cardDetail.rarity} ${cardDetail.set}' : '';
+      final bubbleText = (cardDetail != null) ? cardDetail.toJson().toString() : response;
 
       final aiMessage = ChatMessage(
         id: _uuid.v4(),
-        text: response,
+        text: bubbleText,
         sender: MessageSender.ai,
         timestamp: DateTime.now(),
         type: MessageType.card,
@@ -235,63 +239,6 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   Future<void> pasteImageFromClipboard(Uint8List imageBytes) async {
     await sendImage(imageBytes);
-  }
-
-  String _extractCardName(String response) {
-    final lines = response.split('\n').where((l) => l.trim().isNotEmpty);
-    if (lines.isEmpty) return AppConstants.unknowCard;
-
-    String cardNameLines = lines.firstWhere(
-      (s) => s.contains("Card Name"),
-      orElse: () => '',
-    );
-    if (cardNameLines.isEmpty) return AppConstants.unknowCard;
-
-    String cardName = cardNameLines.split(':').last.trim();
-    if (cardName.isEmpty) return AppConstants.unknowCard;
-
-    String setLines = lines.firstWhere(
-      (s) => s.contains("Set"),
-      orElse: () => '',
-    );
-    if (setLines.isEmpty) {
-      return cardName
-          .replaceAll(RegExp(r'[^a-zA-Z0-9\- ]+'), '')
-          .replaceAll(RegExp(r'\s+'), ' ')
-          .trim();
-    }
-
-    String setName = setLines.split(':').last.trim();
-    if (setName.isNotEmpty) {
-      cardName = '$cardName - $setName';
-    }
-
-    String playerNameLines = lines.firstWhere(
-      (s) => s.contains("Player:"),
-      orElse: () => '',
-    );
-    if (playerNameLines.isNotEmpty) {
-      String playerName = playerNameLines.split(':').last.trim();
-      if (playerName.isNotEmpty) {
-        cardName = '$playerName - $setName'.trim();
-      }
-    }
-
-    String parallelLine = lines.firstWhere(
-      (s) => s.contains("Parallel:"),
-      orElse: () => '',
-    );
-    if (parallelLine.isNotEmpty) {
-      String parallelNumber = parallelLine.split(':').last.trim();
-      if (parallelNumber.isNotEmpty) {
-        cardName = '$cardName $parallelNumber'.trim();
-      }
-    }
-
-    return cardName
-        .replaceAll(RegExp(r'[^a-zA-Z0-9\- ]+'), '')
-        .replaceAll(RegExp(r'\s+'), ' ')
-        .trim();
   }
 }
 
