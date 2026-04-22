@@ -10,7 +10,16 @@ import 'package:flutter_test/flutter_test.dart';
 // ── Fakes ───────────────────────────────────────────────────────────────
 
 class FakeAiRepository implements AiRepository {
-  String identifyResult = 'Pikachu VMAX\nPokemon TCG\nSword & Shield';
+  String identifyResult = '''{
+      "card": {
+  "name": "Pikachu VMAX",
+  "set": "Vivid Voltage",
+  "year": "2020",
+  "rarity": "Secret Rare",
+  "condition": "Mint",
+  "lastSoldPrice": "\$125.50"
+  }
+}''';
   String priceResult =
       'Last sold: \$25.00 on eBay. Reference: pricecharting.com';
   String chatResult = 'I can help identify cards!';
@@ -127,6 +136,7 @@ void main() {
       expect(notifier.state.messages[0].sender, MessageSender.user);
       expect(notifier.state.messages[0].type, MessageType.image);
       expect(notifier.state.messages[0].imagePath, '/tmp/card.jpg');
+      print(notifier.state.messages.toString());
       // AI response
       expect(notifier.state.messages[1].sender, MessageSender.ai);
       expect(notifier.state.messages[1].type, MessageType.card);
